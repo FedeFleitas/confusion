@@ -20,6 +20,7 @@ class DishDetail extends Component {
                 <div></div>
             );
     }
+
     renderComments(comments) {
         if (comments != null) {
             return (
@@ -29,7 +30,7 @@ class DishDetail extends Component {
                         return (
                             <CardBody>
                                 <CardTitle>{comment.comment}</CardTitle>
-                                <CardText>--{comment.author}, {comment.date}</CardText>
+                                <CardText>--{comment.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comment.date)))}</CardText>
                             </CardBody>
                         )
                     })}
@@ -43,14 +44,15 @@ class DishDetail extends Component {
     };
     render() {
         return (
-            <div className="row">
-                <div className="col-12 col-md-5 m-1">
-                    {this.renderDish(this.props.selectedDish)}
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md-5 m-1">
+                        {this.renderDish(this.props.dish)}
+                    </div>
+                    <div className="col-12 col-md-5 m-1">
+                        {this.props.dish && this.renderComments(this.props.dish.comments)}
+                    </div>
                 </div>
-                <div className="col-12 col-md-5 m-1">
-                    {this.props.selectedDish&&this.renderComments(this.props.selectedDish.comments)}
-                </div>
-
             </div>
         )
     };
