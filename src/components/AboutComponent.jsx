@@ -1,35 +1,49 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { Loading } from "./LoadingComponent";
+import { baseUrl } from '../shared/baseUrl';
+import { Fade } from 'react-animation-components';
 
-const RenderLeader = ({ leader }) => {
-    return (
-        <div key={leader.id} className="col-12 mt-5">
-            <Media tag="li">
-                <Media left middle>
-                    <Media object src={leader.image} alt={leader.name} />
-                </Media>
-                <Media body className="ml-5">
-                    <Media heading>
-                        {leader.name}
-                    </Media>
-                    <Media>
-                    {leader.designation}
-                    </Media>
-                    <br/>
-                    {leader.description}
-                </Media>
-            </Media>
-        </div>
+const RenderLeader = ({ leader, isLoading, errMess }) => {
+    if (isLoading) {
+        return (
+            <Loading />
+        )
+    } else if (errMess) {
+        return (
+            <h4>{errMess}</h4>
+        )
+    } else {
 
-    );
+        return (
+            <Fade in key={leader.id}>
+                <div key={leader.id} className="col-12 mt-5">
+                    <Media tag="li">
+                        <Media left middle>
+                            <Media object src={baseUrl + leader.image} alt={leader.name} />
+                        </Media>
+                        <Media body className="ml-5">
+                            <Media heading>
+                                {leader.name}
+                            </Media>
+                            <Media>
+                                {leader.designation}
+                            </Media>
+                            <br />
+                            {leader.description}
+                        </Media>
+                    </Media>
+                </div>
+            </Fade >
+        );
+    };
 };
 
 function About(props) {
-
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
-            <RenderLeader leader={leader} />
+            <RenderLeader leader={leader} isLoading={props.leaders.isLoading} errmess={props.leaders.errMess} />
         );
     });
 
